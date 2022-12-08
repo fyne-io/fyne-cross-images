@@ -7,6 +7,13 @@ RUNNER := $(shell 2>/dev/null 1>&2 docker version && echo "docker" || echo "podm
 
 base:
 	@$(RUNNER) build -f ${CURDIR}/base.Dockerfile -t ${REPOSITORY}:${VERSION}-base .
+	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-base ${REPOSITORY}:base
 
 linux: base
 	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/linux.Dockerfile -t ${REPOSITORY}:${VERSION}-linux .
+	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-linux ${REPOSITORY}:linux
+
+windows: base
+    # windows image is a tag to the base image
+	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-base ${REPOSITORY}:${VERSION}-windows
+	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-windows ${REPOSITORY}:windows
