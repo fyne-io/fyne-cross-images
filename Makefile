@@ -6,11 +6,11 @@ REPOSITORY := docker.io/fyneio/fyne-cross-images
 RUNNER := $(shell 2>/dev/null 1>&2 docker version && echo "docker" || echo "podman")
 
 base:
-	@$(RUNNER) build -f ${CURDIR}/base.Dockerfile -t ${REPOSITORY}:${VERSION}-base .
+	@$(RUNNER) build -f ${CURDIR}/base/Dockerfile -t ${REPOSITORY}:${VERSION}-base .
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-base ${REPOSITORY}:base
 
 linux: base
-	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/linux.Dockerfile -t ${REPOSITORY}:${VERSION}-linux .
+	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/linux/Dockerfile -t ${REPOSITORY}:${VERSION}-linux .
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-linux ${REPOSITORY}:linux
 
 windows: base
