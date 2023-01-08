@@ -4,7 +4,7 @@ ENV GO_VERSION=1.19.4
 # dev version of Zig to support windows-386 target
 # see: https://github.com/ziglang/zig/pull/13569
 ENV ZIG_VERSION=0.11.0-dev.632+d69e97ae1
-ENV FYNE_VERSION=v2.3.0-rc1
+ENV FYNE_VERSION=v2.3.0
 ENV FIXUID_VERSION=0.5.1
 
 # Install common dependencies
