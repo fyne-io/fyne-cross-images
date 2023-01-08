@@ -1,6 +1,6 @@
 FROM debian:bullseye-slim AS base
 
-ENV GO_VERSION=1.19.3
+ENV GO_VERSION=1.19.4
 # dev version of Zig to support windows-386 target
 # see: https://github.com/ziglang/zig/pull/13569
 ENV ZIG_VERSION=0.11.0-dev.632+d69e97ae1
@@ -35,11 +35,11 @@ RUN set -eux; \
     case "$arch" in \
         'amd64') \
             url="https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz";\
-            sha256='74b9640724fd4e6bb0ed2a1bc44ae813a03f1e72a4c76253e2d5c015494430ba'; \
+            sha256='c9c08f783325c4cf840a94333159cc937f05f75d36a8b307951d5bd959cf2ab8'; \
             ;; \
         'arm64') \
             url="https://go.dev/dl/go${GO_VERSION}.linux-arm64.tar.gz";\
-            sha256='99de2fe112a52ab748fb175edea64b313a0c8d51d6157dba683a6be163fd5eab'; \
+            sha256='9df122d6baf6f2275270306b92af3b09d7973fb1259257e284dba33c0db14f1b'; \
             ;; \
         *) echo >&2 "error: unsupported architecture '$arch'"; exit 1 ;; \
     esac; \
