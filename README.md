@@ -22,8 +22,8 @@ The supported architectures for the host are `amd64`and `arm64`.
 | android/amd64  |                    |       |
 | android/arm    |                    |       |
 | android/arm64  |                    |       |
-| darwin/amd64   |                    |       |
-| darwin/arm64   |                    |       |
+| darwin/amd64   | :white_check_mark: |       |
+| darwin/arm64   | :white_check_mark: |       |
 | freebsd/amd64  |                    |       |
 | freebsd/arm64  |                    |       |
 | linux/amd64    | :white_check_mark: |       |
@@ -32,6 +32,9 @@ The supported architectures for the host are `amd64`and `arm64`.
 | linux/arm64    | :white_check_mark: |       |
 | windows/amd64  | :white_check_mark: |       |
 | windows/386    | :white_check_mark: |       |
+
+> Note: darwin images should work out of the box against MacOSX SDKs 11.3. 
+> Other SDK versions could require a different min SDK version that can specified using the `--macosx-version-min` flag    
 
 ## Contribute
 

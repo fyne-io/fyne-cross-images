@@ -1,3 +1,5 @@
+.PHONY: base darwin linux windows
+
 # VERSION is the Fyne Cross Images version
 VERSION := "1.0.0"
 # REPOSITORY is the docker repository
@@ -9,6 +11,10 @@ base:
 	@$(RUNNER) build -f ${CURDIR}/base/Dockerfile -t ${REPOSITORY}:${VERSION}-base .
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-base ${REPOSITORY}:base
 
+darwin: base
+	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/darwin/Dockerfile -t ${REPOSITORY}:${VERSION}-darwin .
+	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-darwin ${REPOSITORY}:darwin
+
 linux: base
 	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/linux/Dockerfile -t ${REPOSITORY}:${VERSION}-linux .
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-linux ${REPOSITORY}:linux
@@ -17,3 +23,5 @@ windows: base
     # windows image is a tag to the base image
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-base ${REPOSITORY}:${VERSION}-windows
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-windows ${REPOSITORY}:windows
+
+all: base darwin linux windows
