@@ -1,4 +1,4 @@
-.PHONY: base darwin darwin-sdk-extractor linux windows
+.PHONY: android base darwin darwin-sdk-extractor linux windows
 
 # VERSION is the Fyne Cross Images version
 VERSION := "1.0.0"
@@ -10,6 +10,10 @@ RUNNER := $(shell 2>/dev/null 1>&2 docker version && echo "docker" || echo "podm
 base:
 	@$(RUNNER) build -f ${CURDIR}/base/Dockerfile -t ${REPOSITORY}:${VERSION}-base .
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-base ${REPOSITORY}:base
+
+android: base
+	@$(RUNNER) build -f ${CURDIR}/android/Dockerfile -t ${REPOSITORY}:${VERSION}-android .
+	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-android ${REPOSITORY}:android
 
 darwin: base
 	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/darwin/Dockerfile -t ${REPOSITORY}:${VERSION}-darwin .
@@ -28,4 +32,4 @@ windows: base
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-base ${REPOSITORY}:${VERSION}-windows
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-windows ${REPOSITORY}:windows
 
-all: base darwin darwin-sdk-extractor linux windows
+all: base android darwin darwin-sdk-extractor linux windows

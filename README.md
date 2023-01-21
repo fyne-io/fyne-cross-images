@@ -18,10 +18,10 @@ The supported architectures for the host are `amd64`and `arm64`.
 
 |                | amd64              | arm64 |
 | -------------- | ------------------ | ----- |
-| android/386    |                    |       |
-| android/amd64  |                    |       |
-| android/arm    |                    |       |
-| android/arm64  |                    |       |
+| android/386    | :white_check_mark: |       |
+| android/amd64  | :white_check_mark: |       |
+| android/arm    | :white_check_mark: |       |
+| android/arm64  | :white_check_mark: |       |
 | darwin/amd64   | :white_check_mark: |       |
 | darwin/arm64   | :white_check_mark: |       |
 | freebsd/amd64  |                    |       |
