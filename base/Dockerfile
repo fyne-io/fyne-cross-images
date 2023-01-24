@@ -46,6 +46,7 @@ RUN set -eux; \
     curl -sSL ${url} -o go.tgz; \
     echo ${sha256} go.tgz | sha256sum -c -; \
     tar -C /usr/local -zxf go.tgz; \
+    rm go.tgz; \
     go version;
 
 ENV GOPATH /go
@@ -79,6 +80,7 @@ RUN set -eux; \
     echo ${sha256} zig.tar.xz | sha256sum -c -; \
     tar -C /usr/local -Jxvf zig.tar.xz; \
     mv /usr/local/zig-* /usr/local/zig; \
+    rm zig.tar.xz; \
     zig version;
 
 # Zig: add arm-features.h from glibc source to allow build on linux arm. See https://github.com/ziglang/zig/pull/12346

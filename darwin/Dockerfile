@@ -30,4 +30,5 @@ RUN set -eux; \
     echo ${sha256} zig.tar.xz | sha256sum -c -; \
     tar -C /usr/local -Jxvf zig.tar.xz; \
     mv /usr/local/zig-* /usr/local/zig; \
+    rm zig.tar.xz; \
     zig version;
