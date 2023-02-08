@@ -41,6 +41,10 @@ linux: base
 	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/linux/Dockerfile -t ${REPOSITORY}:${VERSION}-linux .
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-linux ${REPOSITORY}:linux
 
+web: base
+	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/web/Dockerfile -t ${REPOSITORY}:${VERSION}-web .
+	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-web ${REPOSITORY}:web
+
 windows: base
     # windows image is a tag to the base image
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-base ${REPOSITORY}:${VERSION}-windows

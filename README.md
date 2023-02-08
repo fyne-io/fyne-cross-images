@@ -18,23 +18,27 @@ The supported architectures for the host are `amd64`and `arm64`.
 
 |                | amd64              | arm64 |
 | -------------- | ------------------ | ----- |
-| android/386    | :white_check_mark: |       |
-| android/amd64  | :white_check_mark: |       |
-| android/arm    | :white_check_mark: |       |
-| android/arm64  | :white_check_mark: |       |
-| darwin/amd64   | :white_check_mark: |       |
-| darwin/arm64   | :white_check_mark: |       |
-| freebsd/amd64  | :white_check_mark: |       |
-| freebsd/arm64  | :white_check_mark: |       |
-| linux/amd64    | :white_check_mark: |       |
-| linux/386      | :white_check_mark: |       |
-| linux/arm      | :white_check_mark: |       |
-| linux/arm64    | :white_check_mark: |       |
-| windows/amd64  | :white_check_mark: |       |
-| windows/386    | :white_check_mark: |       |
+| android/386    | :white_check_mark: |  N/A  |
+| android/amd64  | :white_check_mark: |  N/A  |
+| android/arm    | :white_check_mark: |  N/A  |
+| android/arm64  | :white_check_mark: |  N/A  |
+| darwin/amd64   | :white_check_mark: | :white_check_mark: |
+| darwin/arm64   | :white_check_mark: | :white_check_mark: |
+| freebsd/amd64  | :white_check_mark: | :white_check_mark: |
+| freebsd/arm64  | :white_check_mark: | :white_check_mark: |
+| linux/amd64    | :white_check_mark: | :white_check_mark: |
+| linux/386      | :white_check_mark: | :white_check_mark: |
+| linux/arm      | :white_check_mark: | :white_check_mark: |
+| linux/arm64    | :white_check_mark: | :white_check_mark: |
+| windows/amd64  | :white_check_mark: | :white_check_mark: |
+| windows/386    | :white_check_mark: | :white_check_mark: |
+| web            | :white_check_mark: | :white_check_mark: |
 
-> Note: darwin images should work out of the box against MacOSX SDKs 11.3. 
-> Other SDK versions could require a different min SDK version that can specified using the `--macosx-version-min` flag    
+> Note: 
+> - darwin images should work out of the box against MacOSX SDKs 11.3. 
+> Other SDK versions could require a different min SDK version that can specified using the `--macosx-version-min` flag
+> - android NDK is not available for linux/arm64, cross-compilation from arm64 hosts won't be supported in this initial release
+
 
 ## Contribute
 
