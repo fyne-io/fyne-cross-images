@@ -1,4 +1,4 @@
-.PHONY: %
+.PHONY: all base android darwin darwin-sdk-extractor freebsd linux windows web
 
 # VERSION is the Fyne Cross Images version
 VERSION := "1.0.0"
