@@ -50,4 +50,4 @@ windows: base
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-base ${REPOSITORY}:${VERSION}-windows
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-windows ${REPOSITORY}:windows
 
-all: base android darwin darwin-sdk-extractor freebsd linux windows
+all: base android darwin darwin-sdk-extractor freebsd linux windows web
