@@ -30,7 +30,7 @@ docker-freebsd-arm64: docker-freebsd-base
 
 docker-freebsd: docker-freebsd-amd64 docker-freebsd-arm64
 
-docekr-linux: docker-base
+docker-linux: docker-base
 	docker buildx build --platform linux/amd64,linux/arm64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/linux/Dockerfile -t ${REPOSITORY}:${VERSION}-linux -t ${REPOSITORY}:linux --push .
 
 docker-web: docker-base
