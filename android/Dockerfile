@@ -20,7 +20,7 @@ RUN apt-get install -y -q --no-install-recommends openjdk-11-jdk; \
     rm -r /var/lib/apt/lists/*;
 
 # Install command line tools
-RUN wget -O sdk.zip "https://dl.google.com/android/repository/commandlinetools-linux-${COMMANDLINETOOLS_VERSION}_latest.zip"; \
+RUN curl -sSL "https://dl.google.com/android/repository/commandlinetools-linux-${COMMANDLINETOOLS_VERSION}_latest.zip" -o sdk.zip; \
 	echo "${COMMANDLINETOOLS_SHA256SUM} *sdk.zip" | sha256sum -c -; \
 	unzip -d /tmp sdk.zip; \
 	mkdir -p ${ANDROID_HOME}/cmdline-tools; \
