@@ -34,6 +34,7 @@ RUN curl -sSL -o build-tools_r33.0.1-linux.zip  https://dl.google.com/android/re
     unzip -d /tmp platform-tools_r33.0.3-linux.zip && \
     curl -sSl -o android-ndk-r25c-linux.zip https://dl.google.com/android/repository/android-ndk-r25c-linux.zip && \
     unzip -d /tmp android-ndk-r25c-linux.zip && \
+    rm *.zip && \
     mkdir -p ${ANDROID_NDK_HOME} && \
     mkdir -p ${ANDROID_HOME}/build-tools/33.0.1/lib && \
     cp /tmp/android-13/aapt ${ANDROID_HOME}/build-tools/33.0.1 && \
