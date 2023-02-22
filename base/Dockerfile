@@ -98,7 +98,8 @@ RUN set -eux; \
     go install -ldflags="-w -s" -v "fyne.io/fyne/v2/cmd/fyne@${FYNE_VERSION}"; \
     mv /go/bin/fyne /usr/local/bin/fyne; \
     fyne version; \
-    go clean -cache -modcache;
+    go clean -cache -modcache; \
+    mkdir -p "$GOPATH/pkg/mod" && chmod -R 777 "$GOPATH"
 
 # Install fixuid see #41
 RUN arch="$(dpkg --print-architecture)"; \
