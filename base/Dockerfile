@@ -35,11 +35,11 @@ RUN set -eux; \
     case "$arch" in \
         'amd64') \
             url="https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz";\
-            sha256='c9c08f783325c4cf840a94333159cc937f05f75d36a8b307951d5bd959cf2ab8'; \
+            sha256='e3410c676ced327aec928303fef11385702a5562fd19d9a1750d5a2979763c3d'; \
             ;; \
         'arm64') \
             url="https://go.dev/dl/go${GO_VERSION}.linux-arm64.tar.gz";\
-            sha256='9df122d6baf6f2275270306b92af3b09d7973fb1259257e284dba33c0db14f1b'; \
+            sha256='e4d63c933a68e5fad07cab9d12c5c1610ce4810832d47c44314c3246f511ac4f'; \
             ;; \
         *) echo >&2 "error: unsupported architecture '$arch'"; exit 1 ;; \
     esac; \
@@ -98,7 +98,8 @@ RUN set -eux; \
     go install -ldflags="-w -s" -v "fyne.io/fyne/v2/cmd/fyne@${FYNE_VERSION}"; \
     mv /go/bin/fyne /usr/local/bin/fyne; \
     fyne version; \
-    go clean -cache -modcache;
+    go clean -cache -modcache; \
+    mkdir -p "$GOPATH/pkg/mod" && chmod -R 777 "$GOPATH"
 
 # Install fixuid see #41
 RUN arch="$(dpkg --print-architecture)"; \
