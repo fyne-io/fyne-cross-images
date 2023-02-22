@@ -8,7 +8,7 @@ REPOSITORY := docker.io/fyneio/fyne-cross-images
 RUNNER := $(shell 2>/dev/null 1>&2 docker version && echo "docker" || echo "podman")
 
 docker-base:
-	docker buildx build --platform linux/amd64,linux/arm64 -f ${CURDIR}/base/Dockerfile -t ${REPOSITORY}:${VERSION}-base --push .
+	docker buildx build --platform linux/amd64,linux/arm64 -f ${CURDIR}/base/Dockerfile -t ${REPOSITORY}:${VERSION}-base -t ${REPOSITORY}:${VERSION}-windows -t ${REPOSITORY}:windows --push .
 
 #docker-android: docker-base
 #	docker buildx build --platform linux/amd64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/android/Dockerfile -t ${REPOSITORY}:${VERSION}-android --push .
