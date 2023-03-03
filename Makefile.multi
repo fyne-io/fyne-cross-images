@@ -14,7 +14,7 @@ docker-base:
 #	docker buildx build --platform linux/amd64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/android/Dockerfile -t ${REPOSITORY}:${VERSION}-android --push .
 
 docker-darwin: docker-base
-	docker buildx build --platform linux/amd64,linux/arm64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/darwin/Dockerfile -t ${REPOSITORY}:${VERSION}-darwin --push .
+	docker buildx build --platform linux/amd64,linux/arm64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/darwin/Dockerfile -t ${REPOSITORY}:${VERSION}-darwin -t ${REPOSITORY}:darwin --push .
 
 docker-darwin-sdk-extractor: docker-base
 	docker buildx build --platform linux/amd64,linux/arm64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/darwin-sdk-extractor/Dockerfile -t ${REPOSITORY}:${VERSION}-darwin-sdk-extractor -t ${REPOSITORY}:darwin-sdk-extractor --push .
