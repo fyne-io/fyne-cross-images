@@ -12,7 +12,7 @@ base:
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-base ${REPOSITORY}:base
 
 android: base
-	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/android/Dockerfile -t ${REPOSITORY}:${VERSION}-android .
+	@$(RUNNER) build --arch=amd64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/android/Dockerfile -t ${REPOSITORY}:${VERSION}-android .
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-android ${REPOSITORY}:android
 
 darwin: base
