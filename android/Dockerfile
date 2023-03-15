@@ -1,7 +1,8 @@
 ARG FYNE_CROSS_IMAGES_VERSION
+ARG FYNE_CROSS_REPOSITORY
 
 # fyne-cross image for linux
-FROM fyneio/fyne-cross-images:${FYNE_CROSS_IMAGES_VERSION}-base
+FROM ${FYNE_CROSS_REPOSITORY}:${FYNE_CROSS_IMAGES_VERSION}-base
 
 ENV ANDROID_HOME /usr/local/android_sdk
 ENV ANDROID_NDK_HOME ${ANDROID_HOME}/ndk-bundle

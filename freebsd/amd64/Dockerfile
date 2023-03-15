@@ -1,7 +1,8 @@
 ARG FYNE_CROSS_IMAGES_VERSION
+ARG FYNE_CROSS_REPOSITORY
 
-# fyne-cross image for freebsd
-FROM fyneio/fyne-cross-images:${FYNE_CROSS_IMAGES_VERSION}-freebsd-base as pkg
+# fyne-cross image for linux
+FROM ${FYNE_CROSS_REPOSITORY}:${FYNE_CROSS_IMAGES_VERSION}-freebsd-base as pkg
 
 # Download FreeBSD base, extract libs/includes, pkg keys and configs
 # and install fyne dependencies

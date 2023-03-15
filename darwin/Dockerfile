@@ -1,7 +1,8 @@
 ARG FYNE_CROSS_IMAGES_VERSION
+ARG FYNE_CROSS_REPOSITORY
 
-# fyne-cross image for darwin
-FROM fyneio/fyne-cross-images:${FYNE_CROSS_IMAGES_VERSION}-base
+# fyne-cross image for linux
+FROM ${FYNE_CROSS_REPOSITORY}:${FYNE_CROSS_IMAGES_VERSION}-base
 
 # 0.9.1 version of Zig to support darwin targets
 # see: ...

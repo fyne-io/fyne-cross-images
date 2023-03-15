@@ -12,37 +12,37 @@ base:
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-base ${REPOSITORY}:base
 
 android: base
-	@$(RUNNER) build --arch=amd64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/android/Dockerfile -t ${REPOSITORY}:${VERSION}-android .
+	@$(RUNNER) build --arch=amd64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/android/Dockerfile -t ${REPOSITORY}:${VERSION}-android .
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-android ${REPOSITORY}:android
 
 darwin: base
-	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/darwin/Dockerfile -t ${REPOSITORY}:${VERSION}-darwin .
+	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/darwin/Dockerfile -t ${REPOSITORY}:${VERSION}-darwin .
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-darwin ${REPOSITORY}:darwin
 
 darwin-sdk-extractor: base
-	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/darwin-sdk-extractor/Dockerfile -t ${REPOSITORY}:${VERSION}-darwin-sdk-extractor .
+	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/darwin-sdk-extractor/Dockerfile -t ${REPOSITORY}:${VERSION}-darwin-sdk-extractor .
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-darwin-sdk-extractor ${REPOSITORY}:darwin-sdk-extractor
 
 freebsd-base: base
-	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/freebsd/base/Dockerfile -t ${REPOSITORY}:${VERSION}-freebsd-base .
+	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/freebsd/base/Dockerfile -t ${REPOSITORY}:${VERSION}-freebsd-base .
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-freebsd-base ${REPOSITORY}:freebsd-base
 
 freebsd-amd64: freebsd-base
-	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/freebsd/amd64/Dockerfile -t ${REPOSITORY}:${VERSION}-freebsd-amd64 .
+	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/freebsd/amd64/Dockerfile -t ${REPOSITORY}:${VERSION}-freebsd-amd64 .
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-freebsd-amd64 ${REPOSITORY}:freebsd-amd64
 
 freebsd-arm64: freebsd-base
-	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/freebsd/arm64/Dockerfile -t ${REPOSITORY}:${VERSION}-freebsd-arm64 .
+	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/freebsd/arm64/Dockerfile -t ${REPOSITORY}:${VERSION}-freebsd-arm64 .
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-freebsd-arm64 ${REPOSITORY}:freebsd-arm64
 
 freebsd: freebsd-amd64 freebsd-arm64
 
 linux: base
-	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/linux/Dockerfile -t ${REPOSITORY}:${VERSION}-linux .
+	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/linux/Dockerfile -t ${REPOSITORY}:${VERSION}-linux .
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-linux ${REPOSITORY}:linux
 
 web: base
-	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/web/Dockerfile -t ${REPOSITORY}:${VERSION}-web .
+	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/web/Dockerfile -t ${REPOSITORY}:${VERSION}-web .
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-web ${REPOSITORY}:web
 
 windows: base
