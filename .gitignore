@@ -1,0 +1,10 @@
+.*base
+.*darwin*
+.*freebsd
+.*freebsd-amd64
+.*freebsd-arm64
+.*freebsd-base
+.*linux
+.*web
+.android
+
