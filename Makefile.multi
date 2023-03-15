@@ -7,92 +7,116 @@ REPOSITORY := docker.io/fyneio/fyne-cross-images
 # RUNNER is the CLI used to interact with docker or podman
 RUNNER := $(shell 2>/dev/null 1>&2 docker version && echo "docker" || echo "podman")
 
-docker-base:
-       @docker buildx build --platform linux/amd64,linux/arm64 -f ${CURDIR}/base/Dockerfile -t ${REPOSITORY}:${VERSION}-base -t ${REPOSITORY}:${VERSION}-windows -t ${REPOSITORY}:windows --push .
+docker-base: .docker-base
+.docker-base: base/Dockerfile
+	@docker buildx build --platform linux/amd64,linux/arm64 -f ${CURDIR}/base/Dockerfile -t ${REPOSITORY}:${VERSION}-base -t ${REPOSITORY}:${VERSION}-windows -t ${REPOSITORY}:windows --push .
+	@touch .docker-base
 
-#docker-android: docker-base
-#	docker buildx build --platform linux/amd64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} -f ${CURDIR}/android/Dockerfile -t ${REPOSITORY}:${VERSION}-android --push .
+docker-darwin: .docker-darwin
+.docker-darwin: docker-base darwin/Dockerfile
+	@docker buildx build --platform linux/amd64,linux/arm64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/darwin/Dockerfile -t ${REPOSITORY}:${VERSION}-darwin -t ${REPOSITORY}:darwin --push .
+	@touch .docker-darwin
 
-docker-darwin: docker-base
-       @docker buildx build --platform linux/amd64,linux/arm64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/darwin/Dockerfile -t ${REPOSITORY}:${VERSION}-darwin -t ${REPOSITORY}:darwin --push .
+docker-darwin-sdk-extractor: .docker-darwin-sdk-extractor
+.docker-darwin-sdk-extractor: docker-base darwin-sdk-extractor/Dockerfile
+	@docker buildx build --platform linux/amd64,linux/arm64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/darwin-sdk-extractor/Dockerfile -t ${REPOSITORY}:${VERSION}-darwin-sdk-extractor -t ${REPOSITORY}:darwin-sdk-extractor --push .
+	@touch .docker-darwin-sdk-extractor
 
-docker-darwin-sdk-extractor: docker-base
-       @docker buildx build --platform linux/amd64,linux/arm64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/darwin-sdk-extractor/Dockerfile -t ${REPOSITORY}:${VERSION}-darwin-sdk-extractor -t ${REPOSITORY}:darwin-sdk-extractor --push .
+docker-freebsd-base: .docker-freebsd-base
+.docker-freebsd-base: docker-base freebsd/base/Dockerfile
+	@docker buildx build --platform linux/amd64,linux/arm64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/freebsd/base/Dockerfile -t ${REPOSITORY}:${VERSION}-freebsd-base -t ${REPOSITORY}:freebsd-base --push .
+	@touch .docker-freebsd-base
 
-docker-freebsd-base: docker-base
-       @docker buildx build --platform linux/amd64,linux/arm64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/freebsd/base/Dockerfile -t ${REPOSITORY}:${VERSION}-freebsd-base -t ${REPOSITORY}:freebsd-base --push .
+docker-freebsd-amd64: .docker-freebsd-amd64
+.docker-freebsd-amd64: docker-freebsd-base freebsd/amd64/Dockerfile
+	@docker buildx build --platform linux/amd64,linux/arm64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/freebsd/amd64/Dockerfile -t ${REPOSITORY}:${VERSION}-freebsd-amd64 -t ${REPOSITORY}:freebsd-amd64 --push .
+	@touch .docker-freebsd-amd64
 
-docker-freebsd-amd64: docker-freebsd-base
-       @docker buildx build --platform linux/amd64,linux/arm64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/freebsd/amd64/Dockerfile -t ${REPOSITORY}:${VERSION}-freebsd-amd64 -t ${REPOSITORY}:freebsd-amd64 --push .
-
-docker-freebsd-arm64: docker-freebsd-base
+docker-freebsd-arm64: .docker-freebsd-arm64
+.docker-freebsd-arm64: docker-freebsd-base freebsd/arm64/Dockerfile
 	@docker buildx build --platform linux/amd64,linux/arm64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/freebsd/arm64/Dockerfile -t ${REPOSITORY}:${VERSION}-freebsd-arm64  -t ${REPOSITORY}:freebsd-arm64 --push .
+	@touch .docker-freebsd-arm64
 
 docker-freebsd: docker-freebsd-amd64 docker-freebsd-arm64
 
-docker-linux: docker-base
+docker-linux: .docker-linux
+.docker-linux: docker-base linux/Dockerfile
 	@docker buildx build --platform linux/amd64,linux/arm64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/linux/Dockerfile -t ${REPOSITORY}:${VERSION}-linux -t ${REPOSITORY}:linux --push .
+	@touch .docker-linux
 
-docker-web: docker-base
+docker-web: .docker-web
+.docker-web: docker-base web/Dockerfile
 	@docker buildx build --platform linux/amd64,linux/arm64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/web/Dockerfile -t ${REPOSITORY}:${VERSION}-web -t ${REPOSITORY}:web --push .
+	@touch .docker-web
 
 docker-all: docker-base docker-darwin docker-darwin-sdk-extractor docker-freebsd docker-linux docker-web
 
-podman-base:
+podman-base: .podman-base
+.podman-base: base/Dockerfile
 	@buildah manifest create ${VERSION}-base
 	@buildah bud --tag ${REPOSITORY}:${VERSION}-base --tag ${REPOSITORY}:${VERSION}-windows --manifest ${VERSION}-base --arch amd64 base
 	@buildah bud --tag ${REPOSITORY}:${VERSION}-base --tag ${REPOSITORY}:${VERSION}-windows --manifest ${VERSION}-base --arch arm64 base
 	@buildah manifest push --all ${VERSION}-base docker://${REPOSITORY}:${VERSION}-base
 	@buildah manifest push --all ${VERSION}-base docker://${REPOSITORY}:${VERSION}-windows
+	@touch .podman-base
 
-podman-linux: podman-base
+podman-linux: .podman-linux
+.podman-linux: .podman-base linux/Dockerfile
 	@buildah manifest create ${VERSION}-linux
 	@buildah bud --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} --tag ${REPOSITORY}:${VERSION}-linux --manifest ${VERSION}-linux --arch amd64 linux
 	@buildah bud --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} --tag ${REPOSITORY}:${VERSION}-linux --manifest ${VERSION}-linux --arch arm64 linux
 	@buildah manifest push --all ${VERSION}-linux docker://${REPOSITORY}:${VERSION}-linux
+	@touch .podman-linux
 
-#podman-android: podman-base
-#	@buildah manifest create ${VERSION}-android
-#	@buildah bud --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --manifest ${REPOSITORY}:${VERSION}-android --arch amd64 android
-
-
-podman-darwin: podman-base
+podman-darwin: .podman-darwin
+.podman-darwin: .podman-base darwin/Dockerfile
 	@buildah manifest create ${VERSION}-darwin
 	@buildah bud --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} --tag ${REPOSITORY}:${VERSION}-darwin --manifest ${VERSION}-darwin --arch amd64 darwin
 	@buildah bud --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} --tag ${REPOSITORY}:${VERSION}-darwin --manifest ${VERSION}-darwin --arch arm64 darwin
 	@buildah manifest push --all ${VERSION}-darwin docker://${REPOSITORY}:${VERSION}-darwin
+	@touch .podman-darwin
 
-podman-darwin-sdk-extractor: podman-base
+podman-darwin-sdk-extractor: .podman-darwin-sdk
+.podman-darwin-sdk: .podman-base darwin-sdk-extractor/Dockerfile
 	@buildah manifest create ${VERSION}-darwin-sdk-extractor
 	@buildah bud --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} --tag ${VERSION}-darwin-sdk-extractor --manifest ${REPOSITORY}:${VERSION}-darwin-sdk-extractor --arch amd64 darwin-sdk-extractor
 	@buildah bud --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} --tag ${VERSION}-darwin-sdk-extractor --manifest ${REPOSITORY}:${VERSION}-darwin-sdk-extractor --arch arm64 darwin-sdk-extractor
 	@buildah manifest push --all ${VERSION}-darwin-sdk-extractor docker://${REPOSITORY}:${VERSION}-darwin-sdk-extractor
+	@touch .podman-darwin-sdk
 
-podman-freebsd-base: podman-base
+podman-freebsd-base: .podman-freebsd
+.podman-freebsd: .podman-base freebsd/base/Dockerfile
 	@buildah manifest create ${VERSION}-freebsd-base
 	@buildah bud --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} --tag ${REPOSITORY}:${VERSION}-freebsd-base --manifest ${VERSION}-freebsd-base --arch amd64 freebsd/base
 	@buildah bud --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} --tag ${REPOSITORY}:${VERSION}-freebsd-base --manifest ${VERSION}-freebsd-base --arch arm64 freebsd/base
 	@buildah manifest push --all ${VERSION}-freebsd-base docker://${REPOSITORY}:${VERSION}-freebsd-base
+	@touch .podman-freebsd
 
-podman-freebsd-amd64: podman-freebsd-base
+podman-freebsd-amd64: .podman-freebsd-amd64
+.podman-freebsd-amd64: .podman-freebsd freebsd/amd64/Dockerfile
 	@buildah manifest create ${VERSION}-freebsd-amd64
 	@buildah bud --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} --tag ${REPOSITORY}:${VERSION}-freebsd-amd64 --manifest ${VERSION}-freebsd-amd64 --arch amd64 freebsd/amd64
 	@buildah bud --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} --tag ${REPOSITORY}:${VERSION}-freebsd-amd64 --manifest ${VERSION}-freebsd-amd64 --arch arm64 freebsd/amd64
 	@buildah manifest push --all ${VERSION}-freebsd-amd64 docker://${REPOSITORY}:${VERSION}-freebsd-amd64
+	@touch .podman-freebsd-amd64
 
-podman-freebsd-arm64: podman-freebsd-base
+podman-freebsd-arm64: .podman-freebsd-arm64
+.podman-freebsd-arm64: .podman-freebsd freebsd/arm64/Dockerfile
 	@buildah manifest create ${VERSION}-freebsd-arm64
 	@buildah bud --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} --tag ${REPOSITORY}:${VERSION}-freebsd-arm64 --manifest ${VERSION}-freebsd-arm64 --arch amd64 freebsd/arm64
 	@buildah bud --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} --tag ${REPOSITORY}:${VERSION}-freebsd-arm64 --manifest ${VERSION}-freebsd-arm64 --arch arm64 freebsd/arm64
 	@buildah manifest push --all ${VERSION}-freebsd-arm64 docker://${REPOSITORY}:${VERSION}-freebsd-arm64
+	@touch .podman-freebsd-arm64
 
 podman-freebsd: podman-freebsd-arm64 podman-freebsd-amd64
 
-podman-web: podman-base
+podman-web: .podman-web
+.podman-web: .podman-base web/Dockerfile
 	@buildah manifest create ${VERSION}-web
 	@buildah bud --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} --tag ${REPOSITORY}:${VERSION}-web --manifest ${VERSION}-web --arch amd64 web
 	@buildah bud --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} --tag ${REPOSITORY}:${VERSION}-web --manifest ${VERSION}-web --arch arm64 web
 	@buildah manifest push --all ${VERSION}-web docker://${REPOSITORY}:${VERSION}-web
+	@touch .podman-web
 
 podman-all: podman-darwin podman-darwin-sdk-extractor podman-freebsd podman-linux podman-web
 
