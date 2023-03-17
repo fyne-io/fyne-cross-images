@@ -76,13 +76,21 @@ podman-darwin: .podman-darwin
 	@buildah manifest push --all ${VERSION}-darwin docker://${REPOSITORY}:${VERSION}-darwin
 	@touch .podman-darwin
 
-podman-darwin-sdk-extractor: .podman-darwin-sdk
-.podman-darwin-sdk: .podman-base darwin-sdk-extractor/Dockerfile
+podman-darwin-sdk: .podman-darwin-sdk
+.podman-darwin-sdk: .podman-base darwin-with-sdk/Dockerfile
+	@buildah manifest create ${VERSION}-darwin-sdk
+	@buildah bud --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} --tag ${REPOSITORY}:${VERSION}-darwin-sdk --manifest ${VERSION}-darwin-sdk --arch amd64 darwin-with-sdk
+	@buildah bud --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} --tag ${REPOSITORY}:${VERSION}-darwin-sdk --manifest ${VERSION}-darwin-sdk --arch arm64 darwin-with-sdk
+	@buildah manifest push --all ${VERSION}-darwin-sdk docker://${REPOSITORY}:${VERSION}-darwin-sdk
+	@touch .podman-darwin-sdk
+
+podman-darwin-sdk-extractor: .podman-darwin-sdk-extractor
+.podman-darwin-sdk-extractor: .podman-base darwin-sdk-extractor/Dockerfile
 	@buildah manifest create ${VERSION}-darwin-sdk-extractor
 	@buildah bud --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} --tag ${VERSION}-darwin-sdk-extractor --manifest ${REPOSITORY}:${VERSION}-darwin-sdk-extractor --arch amd64 darwin-sdk-extractor
 	@buildah bud --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} --tag ${VERSION}-darwin-sdk-extractor --manifest ${REPOSITORY}:${VERSION}-darwin-sdk-extractor --arch arm64 darwin-sdk-extractor
 	@buildah manifest push --all ${VERSION}-darwin-sdk-extractor docker://${REPOSITORY}:${VERSION}-darwin-sdk-extractor
-	@touch .podman-darwin-sdk
+	@touch .podman-darwin-sdk-extractor
 
 podman-freebsd-base: .podman-freebsd
 .podman-freebsd: .podman-base freebsd/base/Dockerfile
