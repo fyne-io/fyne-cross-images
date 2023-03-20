@@ -93,6 +93,11 @@ RUN curl -SsL  https://raw.githubusercontent.com/ziglang/zig/d9a754e5e39f6e124b9
 ### NOTE: Ensure all tools are installed under /usr/local/bin
 ##################################################################
 
+# Install the fyne-cross-s3 download and upload tool
+RUN set -eux; \
+    go install -ldflags="-w -s" -v "github.com/fyne-io/fyne-cross/internal/cmd/fyne-cross-s3@develop"; \
+    mv /go/bin/fyne-cross-s3 /usr/local/bin/fyne-cross-s3;
+
 # Install the fyne CLI tool
 RUN set -eux; \ 
     go install -ldflags="-w -s" -v "fyne.io/fyne/v2/cmd/fyne@${FYNE_VERSION}"; \
