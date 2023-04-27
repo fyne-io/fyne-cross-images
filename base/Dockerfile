@@ -3,7 +3,7 @@ FROM debian:bullseye-slim AS base
 ENV GO_VERSION=1.20.3
 # dev version of Zig to support windows-386 target
 # see: https://github.com/ziglang/zig/pull/13569
-ENV ZIG_VERSION=0.11.0-dev.632+d69e97ae1
+ENV ZIG_VERSION=0.11.0-dev.2834+13101295b
 ENV FYNE_VERSION=v2.3.3
 ENV FIXUID_VERSION=0.5.1
 
@@ -66,14 +66,14 @@ RUN set -eux; \
             url="https://ziglang.org/builds/zig-linux-x86_64-${ZIG_VERSION}.tar.xz";\
             # stable release
             # url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-x86_64-${ZIG_VERSION}.tar.xz";\
-            sha256='11508dca9a4654719f337bb43d6b226cc3f17f5888cb3f277436c7944f9bcd0b'; \
+            sha256='cd73a3f3dc5e121712c9f8de7988e725b988516f3b50cfd3354033cec87b4c70'; \
             ;; \
         'arm64') \
             # dev release
             url="https://ziglang.org/builds/zig-linux-aarch64-${ZIG_VERSION}.tar.xz";\
             # stable release
             # url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-aarch64-${ZIG_VERSION}.tar.xz";\
-            sha256='eea60804bb6ec17a21aed9d2e507c37e922ef285ce0142e3ef1002fcb89133a2'; \
+            sha256='0f5d907f263ea2dc41c6417f089777f05dc25bfb5011023487931141138e34e6'; \
             ;; \
         *) echo >&2 "error: unsupported architecture '$arch'"; exit 1 ;; \
     esac; \
