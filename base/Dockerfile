@@ -1,10 +1,10 @@
 FROM debian:bullseye-slim AS base
 
-ENV GO_VERSION=1.19.6
+ENV GO_VERSION=1.20.3
 # dev version of Zig to support windows-386 target
 # see: https://github.com/ziglang/zig/pull/13569
-ENV ZIG_VERSION=0.11.0-dev.632+d69e97ae1
-ENV FYNE_VERSION=v2.3.1
+ENV ZIG_VERSION=0.11.0-dev.2935+ec6ffaa1e
+ENV FYNE_VERSION=v2.3.3
 ENV FIXUID_VERSION=0.5.1
 
 # Install common dependencies
@@ -35,11 +35,11 @@ RUN set -eux; \
     case "$arch" in \
         'amd64') \
             url="https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz";\
-            sha256='e3410c676ced327aec928303fef11385702a5562fd19d9a1750d5a2979763c3d'; \
+            sha256='979694c2c25c735755bf26f4f45e19e64e4811d661dd07b8c010f7a8e18adfca'; \
             ;; \
         'arm64') \
             url="https://go.dev/dl/go${GO_VERSION}.linux-arm64.tar.gz";\
-            sha256='e4d63c933a68e5fad07cab9d12c5c1610ce4810832d47c44314c3246f511ac4f'; \
+            sha256='eb186529f13f901e7a2c4438a05c2cd90d74706aaa0a888469b2a4a617b6ee54'; \
             ;; \
         *) echo >&2 "error: unsupported architecture '$arch'"; exit 1 ;; \
     esac; \
@@ -66,14 +66,14 @@ RUN set -eux; \
             url="https://ziglang.org/builds/zig-linux-x86_64-${ZIG_VERSION}.tar.xz";\
             # stable release
             # url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-x86_64-${ZIG_VERSION}.tar.xz";\
-            sha256='11508dca9a4654719f337bb43d6b226cc3f17f5888cb3f277436c7944f9bcd0b'; \
+            sha256='6b604a09b5e3cfaf1643268488746e703c00418f5c2f3021cf50a5b6efbc02f8'; \
             ;; \
         'arm64') \
             # dev release
             url="https://ziglang.org/builds/zig-linux-aarch64-${ZIG_VERSION}.tar.xz";\
             # stable release
             # url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-aarch64-${ZIG_VERSION}.tar.xz";\
-            sha256='eea60804bb6ec17a21aed9d2e507c37e922ef285ce0142e3ef1002fcb89133a2'; \
+            sha256='c3c9d2a986bf99ab07c47e1c268b494a33accf416547ad7b99915715af3f5c74'; \
             ;; \
         *) echo >&2 "error: unsupported architecture '$arch'"; exit 1 ;; \
     esac; \
@@ -92,6 +92,11 @@ RUN curl -SsL  https://raw.githubusercontent.com/ziglang/zig/d9a754e5e39f6e124b9
 ### Tools section
 ### NOTE: Ensure all tools are installed under /usr/local/bin
 ##################################################################
+
+# Install the fyne-cross-s3 download and upload tool
+RUN set -eux; \
+    go install -ldflags="-w -s" -v "github.com/fyne-io/fyne-cross/internal/cmd/fyne-cross-s3@develop"; \
+    mv /go/bin/fyne-cross-s3 /usr/local/bin/fyne-cross-s3;
 
 # Install the fyne CLI tool
 RUN set -eux; \ 
