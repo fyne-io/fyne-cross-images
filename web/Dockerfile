@@ -1,8 +1,9 @@
 ARG FYNE_CROSS_IMAGES_VERSION
 ARG GOPHERJS_GO_VERSION=1.17.9
+ARG FYNE_CROSS_REPOSITORY
 
-# fyne-cross image for web
-FROM fyneio/fyne-cross-images:${FYNE_CROSS_IMAGES_VERSION}-base
+# fyne-cross image for linux
+FROM ${FYNE_CROSS_REPOSITORY}:${FYNE_CROSS_IMAGES_VERSION}-base
 ARG GOPHERJS_GO_VERSION
 
 # Install the GopherJS CLI tool

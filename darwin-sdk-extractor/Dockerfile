@@ -1,7 +1,8 @@
 ARG FYNE_CROSS_IMAGES_VERSION
+ARG FYNE_CROSS_REPOSITORY
 
 # fyne-cross image for linux
-FROM fyneio/fyne-cross-images:${FYNE_CROSS_IMAGES_VERSION}-base as build
+FROM ${FYNE_CROSS_REPOSITORY}:${FYNE_CROSS_IMAGES_VERSION}-base as build
 
 RUN set -eux; \
     apt-get update; \

@@ -39,6 +39,13 @@ The supported architectures for the host are `amd64`and `arm64`.
 > Other SDK versions could require a different min SDK version that can specified using the `--macosx-version-min` flag
 > - android NDK is not available for linux/arm64, cross-compilation from arm64 hosts won't be supported in this initial release
 
+## Building container with darwin sdk included
+
+In some case, you might want to build your own container and include the darwin sdk in it. A solution to this is to use
+`fyne-cross darwin-sdk-extract` command and copy the sdk you want in the subdirectory `darwin-with-sdk/sdk`. You can then use
+the Makefile to build that new container. If you do not need to rebuild the `base` and `darwin` container, just reusing the
+upstream version, you can do so by creating the appropriate `.`file that match the Makefile and the builder you are using to
+create your image. For example: `touch .docker-base .docker-darwin` if you are using docker with the multi architecture Makefile.
 
 ## Contribute
 
