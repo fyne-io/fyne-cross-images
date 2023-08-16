@@ -106,6 +106,9 @@ RUN set -eux; \
     go clean -cache -modcache; \
     mkdir -p "$GOPATH/pkg/mod" && chmod -R 777 "$GOPATH"
 
+# Work around `fatal: detected dubious ownership in repository at ‘/app’` error reported by some users likely when UID < 1000 
+RUN git config --global --add safe.directory /app
+
 # Install fixuid see #41
 RUN arch="$(dpkg --print-architecture)"; \
     addgroup --gid 1000 docker; \
