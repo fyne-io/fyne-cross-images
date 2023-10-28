@@ -1,4 +1,4 @@
 # VERSION is the Fyne Cross Images version
-VERSION := "1.1.3"
+VERSION := $(shell git tag --points-at HEAD | awk -v def="dev" '{print} END { if(NR==0) {print def} }')
 # REPOSITORY is the docker repository
 REPOSITORY := docker.io/fyneio/fyne-cross-images
