@@ -6,7 +6,7 @@ include Makefile.inc
 RUNNER := $(shell 2>/dev/null 1>&2 docker version && echo "docker" || echo "podman")
 
 base: .base
-.base:
+.base: base/Dockerfile
 	@$(RUNNER) build -f ${CURDIR}/base/Dockerfile -t ${REPOSITORY}:${VERSION}-base .
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-base ${REPOSITORY}:base
 	@touch .base
