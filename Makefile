@@ -67,3 +67,7 @@ windows: base
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-windows ${REPOSITORY}:windows
 
 all: base android darwin darwin-sdk-extractor freebsd linux windows web
+
+android-push: android
+	@$(RUNNER) push ${REPOSITORY}:${VERSION}-android
+	@$(RUNNER) push ${REPOSITORY}:android
