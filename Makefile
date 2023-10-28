@@ -13,7 +13,7 @@ base: .base
 
 android: .android
 .android: .base android/Dockerfile
-	@$(RUNNER) build --arch=amd64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/android/Dockerfile -t ${REPOSITORY}:${VERSION}-android .
+	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/android/Dockerfile -t ${REPOSITORY}:${VERSION}-android .
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-android ${REPOSITORY}:android
 	@touch .android
 

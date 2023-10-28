@@ -57,7 +57,7 @@ jobs:
       - name: Build image
         working-directory: fyne-cross-images
         run: |
-          make  ${{ matrix.target.os }}
+          make ${{ matrix.target.os }}
 
       - name: Verify new image with calculator
         working-directory: calculator
