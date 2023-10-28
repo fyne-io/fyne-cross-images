@@ -67,5 +67,5 @@ jobs:
             ${{ matrix.target.args }} \
             -debug -no-cache \
             -image docker.io/fyneio/fyne-cross-images:dev-${{ matrix.target.os }} \
-            -name calculator{{ matrix.target.ext }}
+            -name calculator${{ matrix.target.ext }}
       
