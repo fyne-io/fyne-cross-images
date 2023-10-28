@@ -17,6 +17,9 @@ jobs:
             args: -app-id calc.sha${{ github.sha }}
           - os: web
           - os: freebsd
+            arch: -amd64
+          - os: freebsd
+            arch: -arm64
 
     steps:
       - name: Setup Go environment
@@ -57,7 +60,7 @@ jobs:
       - name: Build image
         working-directory: fyne-cross-images
         run: |
-          make ${{ matrix.target.os }}
+          make ${{ matrix.target.os }}${{ matrix.target.arch }}
 
       - name: Verify new image with calculator
         working-directory: calculator
@@ -66,6 +69,6 @@ jobs:
             ${{ matrix.target.os }} \
             ${{ matrix.target.args }} \
             -debug -no-cache \
-            -image docker.io/fyneio/fyne-cross-images:dev-${{ matrix.target.os }} \
+            -image docker.io/fyneio/fyne-cross-images:dev-${{ matrix.target.os }}${{ matrix.target.arch }} \
             -name calculator${{ matrix.target.ext }}
       
