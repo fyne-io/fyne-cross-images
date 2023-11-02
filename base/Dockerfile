@@ -107,8 +107,7 @@ RUN set -eux; \
     mkdir -p "$GOPATH/pkg/mod" && chmod -R 777 "$GOPATH"
 
 # Work around `fatal: detected dubious ownership in repository at ‘/app’` error reported by some users likely when UID < 1000 
-ENV GIT_CONFIG_GLOBAL /.gitconfig
-RUN git config --global --add safe.directory /app && chmod a+r /.gitconfig
+RUN git config --global --add safe.directory /app && mv ~/.gitconfig /etc/gitconfig && chmod a+r /etc/gitconfig
 
 # Install fixuid see #41
 RUN arch="$(dpkg --print-architecture)"; \
