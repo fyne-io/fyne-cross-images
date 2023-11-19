@@ -31,4 +31,6 @@ jobs:
       - name: Build all images
         run: |
           make -f Makefile.multi docker-all
+          docker pull docker.io/fyneio/fyne-cross-images:v1.1.4-base
+          touch .base
           make android-push
