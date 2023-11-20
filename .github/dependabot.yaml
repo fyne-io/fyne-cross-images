@@ -1,0 +1,30 @@
+version: 2
+updates:
+  - package-ecosystem: "docker"
+    directory: "/android"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/base"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/darwin"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/darwin-sdk-extractor"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/freebsd"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/linux"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/web"
+    schedule:
+      interval: "weekly"
