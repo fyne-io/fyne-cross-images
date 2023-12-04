@@ -68,6 +68,10 @@ windows: base
 
 all: base android darwin darwin-sdk-extractor freebsd linux windows web
 
+base-pull:
+	@$(RUNNER) pull ${REPOSITORY}:${VERSION}-base
+	touch .base
+
 android-push: android
 	@$(RUNNER) push ${REPOSITORY}:${VERSION}-android
 	@$(RUNNER) push ${REPOSITORY}:android

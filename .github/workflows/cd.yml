@@ -31,4 +31,5 @@ jobs:
       - name: Build all images
         run: |
           make -f Makefile.multi docker-all
+          make base-pull
           make android-push
