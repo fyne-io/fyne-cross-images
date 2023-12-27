@@ -39,7 +39,7 @@ jobs:
           repository: fyne-io/fyne-cross
           path: fyne-cross
 
-      - name: Checkout calcultator repository
+      - name: Checkout calculator repository
         uses: actions/checkout@v3
         with:
           repository: fyne-io/calculator
