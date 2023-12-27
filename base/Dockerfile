@@ -1,6 +1,8 @@
 FROM debian:bullseye-slim AS base
 
 ENV GO_VERSION=1.21.5
+# dev version of Zig to support windows-386 target 
+# see: https://github.com/ziglang/zig/pull/13569
 ENV ZIG_VERSION=0.11.0-dev.2935+ec6ffaa1e
 ENV FYNE_VERSION=v2.4.3
 ENV FIXUID_VERSION=0.6.0
