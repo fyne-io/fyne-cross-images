@@ -7,10 +7,10 @@ FROM ${FYNE_CROSS_REPOSITORY}:${FYNE_CROSS_IMAGES_VERSION}-freebsd-base as pkg
 # Download FreeBSD base, extract libs/includes, pkg keys and configs
 # and install fyne dependencies
 # Based on: https://github.com/myfreeweb/docker-freebsd-cross/tree/fc70196f62c00a10eb61a45a4798e09214e0cdfd
-ENV ABI="FreeBSD:12:amd64"
+ENV ABI="FreeBSD:13:amd64"
 RUN mkdir /freebsd \
     && mkdir /etc/pkg/ \
-	&& curl https://download.freebsd.org/ftp/releases/amd64/12.4-RELEASE/base.txz | \
+	&& curl https://download.freebsd.org/ftp/releases/amd64/13.3-RELEASE/base.txz | \
 		bsdtar -xf - -C /freebsd ./lib ./usr/lib ./usr/libdata ./usr/include ./usr/share/keys ./etc \
     && cp /freebsd/etc/pkg/FreeBSD.conf /etc/pkg/ \
     && ln -s /freebsd/usr/share/keys /usr/share/keys 
