@@ -1,9 +1,9 @@
 FROM debian:bullseye-slim AS base
 
-ENV GO_VERSION=1.21.8
+ENV GO_VERSION=1.22.5
 # dev version of Zig to support windows-386 target
 # see: https://github.com/ziglang/zig/pull/13569
-ENV ZIG_VERSION=0.11.0-dev.2935+ec6ffaa1e
+ENV ZIG_VERSION=0.13.0
 ENV FYNE_VERSION=v2.4.4
 ENV FIXUID_VERSION=0.5.1
 
@@ -35,11 +35,11 @@ RUN set -eux; \
     case "$arch" in \
         'amd64') \
             url="https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz";\
-            sha256='538b3b143dc7f32b093c8ffe0e050c260b57fc9d57a12c4140a639a8dd2b4e4f'; \
+            sha256='904b924d435eaea086515bc63235b192ea441bd8c9b198c507e85009e6e4c7f0'; \
             ;; \
         'arm64') \
             url="https://go.dev/dl/go${GO_VERSION}.linux-arm64.tar.gz";\
-            sha256='3c19113c686ffa142e9159de1594c952dee64d5464965142d222eab3a81f1270'; \
+            sha256='8d21325bfcf431be3660527c1a39d3d9ad71535fabdf5041c826e44e31642b5a'; \
             ;; \
         *) echo >&2 "error: unsupported architecture '$arch'"; exit 1 ;; \
     esac; \
@@ -63,17 +63,17 @@ RUN set -eux; \
     case "$arch" in \
         'amd64') \
             # dev release
-            url="https://ziglang.org/builds/zig-linux-x86_64-${ZIG_VERSION}.tar.xz";\
+            # url="https://ziglang.org/builds/zig-linux-x86_64-${ZIG_VERSION}.tar.xz";\
             # stable release
-            # url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-x86_64-${ZIG_VERSION}.tar.xz";\
-            sha256='6b604a09b5e3cfaf1643268488746e703c00418f5c2f3021cf50a5b6efbc02f8'; \
+            url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-x86_64-${ZIG_VERSION}.tar.xz";\
+            sha256='d45312e61ebcc48032b77bc4cf7fd6915c11fa16e4aad116b66c9468211230ea'; \
             ;; \
         'arm64') \
             # dev release
-            url="https://ziglang.org/builds/zig-linux-aarch64-${ZIG_VERSION}.tar.xz";\
+            #url="https://ziglang.org/builds/zig-linux-aarch64-${ZIG_VERSION}.tar.xz";\
             # stable release
-            # url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-aarch64-${ZIG_VERSION}.tar.xz";\
-            sha256='c3c9d2a986bf99ab07c47e1c268b494a33accf416547ad7b99915715af3f5c74'; \
+            url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-aarch64-${ZIG_VERSION}.tar.xz";\
+            sha256='041ac42323837eb5624068acd8b00cd5777dac4cf91179e8dad7a7e90dd0c556'; \
             ;; \
         *) echo >&2 "error: unsupported architecture '$arch'"; exit 1 ;; \
     esac; \
