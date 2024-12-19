@@ -1,10 +1,14 @@
+# minisign is needed to verify the zig download
+FROM jedisct1/minisign AS minisign
+
 FROM debian:bullseye-slim AS base
 
-ENV GO_VERSION=1.22.5
-# dev version of Zig to support windows-386 target
-# see: https://github.com/ziglang/zig/pull/13569
+ENV GO_VERSION=1.23.4
+ENV GO_AMD64_CHECKSUM="6924efde5de86fe277676e929dc9917d466efa02fb934197bc2eba35d5680971"
+ENV GO_ARM64_CHECKSUM="16e5017863a7f6071363782b1b8042eb12c6ca4f4cd71528b2123f0a1275b13e"
 ENV ZIG_VERSION=0.13.0
-ENV FYNE_VERSION=v2.4.4
+ENV ZIG_MINISIGN_KEY="RWSGOq2NVecA2UPNdBUZykf1CCb147pkmdtYxgb3Ti+JO/wCYvhbAb/U"
+ENV FYNE_VERSION=v2.5.3
 ENV FIXUID_VERSION=0.5.1
 
 # Install common dependencies
@@ -35,11 +39,11 @@ RUN set -eux; \
     case "$arch" in \
         'amd64') \
             url="https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz";\
-            sha256='904b924d435eaea086515bc63235b192ea441bd8c9b198c507e85009e6e4c7f0'; \
+            sha256=${GO_AMD64_CHECKSUM};\
             ;; \
         'arm64') \
             url="https://go.dev/dl/go${GO_VERSION}.linux-arm64.tar.gz";\
-            sha256='8d21325bfcf431be3660527c1a39d3d9ad71535fabdf5041c826e44e31642b5a'; \
+            sha256=${GO_ARM64_CHECKSUM};\
             ;; \
         *) echo >&2 "error: unsupported architecture '$arch'"; exit 1 ;; \
     esac; \
@@ -56,37 +60,36 @@ WORKDIR $GOPATH
 
 
 # Install Zig
+
+# copy minisign
+COPY --from=minisign /usr/local/bin/minisign /usr/local/bin/minisign
+
 RUN set -eux; \
     arch="$(dpkg --print-architecture)"; \
     url=; \
-    sha256=; \
+    public_key=${ZIG_MINISIGN_KEY}; \
     case "$arch" in \
         'amd64') \
             # dev release
             # url="https://ziglang.org/builds/zig-linux-x86_64-${ZIG_VERSION}.tar.xz";\
             # stable release
             url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-x86_64-${ZIG_VERSION}.tar.xz";\
-            sha256='d45312e61ebcc48032b77bc4cf7fd6915c11fa16e4aad116b66c9468211230ea'; \
             ;; \
         'arm64') \
             # dev release
             #url="https://ziglang.org/builds/zig-linux-aarch64-${ZIG_VERSION}.tar.xz";\
             # stable release
             url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-aarch64-${ZIG_VERSION}.tar.xz";\
-            sha256='041ac42323837eb5624068acd8b00cd5777dac4cf91179e8dad7a7e90dd0c556'; \
             ;; \
         *) echo >&2 "error: unsupported architecture '$arch'"; exit 1 ;; \
     esac; \
     curl -sSL ${url} -o zig.tar.xz; \
-    echo ${sha256} zig.tar.xz | sha256sum -c -; \
+    curl -sSL ${url}.minisig -o zig.tar.xz.minisig; \
+    minisign -Vm zig.tar.xz -P ${public_key}; \
     tar -C /usr/local -Jxvf zig.tar.xz; \
     mv /usr/local/zig-* /usr/local/zig; \
     rm zig.tar.xz; \
     zig version;
-
-# Zig: add arm-features.h from glibc source to allow build on linux arm. See https://github.com/ziglang/zig/pull/12346
-# TODO: remove once 0.10.1 or greater is released
-RUN curl -SsL  https://raw.githubusercontent.com/ziglang/zig/d9a754e5e39f6e124b9f5be093d89ba30f16f085/lib/libc/glibc/sysdeps/arm/arm-features.h > /usr/local/zig/lib/libc/glibc/sysdeps/arm/arm-features.h
 
 ##################################################################
 ### Tools section
