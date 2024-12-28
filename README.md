@@ -35,7 +35,7 @@ The supported architectures for the host are `amd64`and `arm64`.
 | web            | :white_check_mark: | :white_check_mark: |
 
 > Note: 
-> - darwin images should work out of the box against MacOSX SDKs 11.3. 
+> - darwin images works against MacOSX SDKs 11.3. Other SDKs are not supported.
 > Other SDK versions could require a different min SDK version that can specified using the `--macosx-version-min` flag
 > - android NDK is not available for linux/arm64, cross-compilation from arm64 hosts won't be supported in this initial release
 
