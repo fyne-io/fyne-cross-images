@@ -20,6 +20,7 @@ RUN set -eux; \
         libxinerama-dev:amd64 \
          # deps to support wayland
         libxkbcommon-dev:amd64 \
+        libdecor-0-dev:amd64 \
     ; \
     apt-get install -y -q --no-install-recommends \
         libgl-dev:arm64 \
@@ -31,6 +32,7 @@ RUN set -eux; \
         libxinerama-dev:arm64 \
          # deps to support wayland
         libxkbcommon-dev:arm64 \
+        libdecor-0-dev:arm64 \
     ; \
     apt-get install -y -q --no-install-recommends \
         libgl-dev:armhf \
@@ -42,6 +44,7 @@ RUN set -eux; \
         libxinerama-dev:armhf \
          # deps to support wayland
         libxkbcommon-dev:armhf \
+        libdecor-0-dev:armhf \
     ; \
     apt-get install -y -q --no-install-recommends \
         libgl-dev:i386 \
@@ -53,6 +56,7 @@ RUN set -eux; \
         libxinerama-dev:i386 \
          # deps to support wayland
         libxkbcommon-dev:i386 \
+        libdecor-0-dev:i386 \
     ; \
     # remove static libX11 to allow zig build against shared X11 lib
     rm -rf /usr/lib/*/libX11.a; \
