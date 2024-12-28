@@ -49,7 +49,7 @@ FROM pkg
 COPY --from=pkg /pkg /pkg
 
 ENV PATH=/pkg/sbin:${PATH}
-ENV LLVM_VERSION=12
+ENV LLVM_VERSION=17
  
 RUN apt-get update -qq \
     && apt install -y -q --no-install-recommends gnupg \
