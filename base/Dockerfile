@@ -1,7 +1,7 @@
 # minisign is needed to verify the zig download
 FROM jedisct1/minisign AS minisign
 
-FROM debian:bullseye-slim AS base
+FROM debian:bookworm-slim AS base
 
 ENV GO_VERSION=1.23.4
 ENV GO_AMD64_CHECKSUM="6924efde5de86fe277676e929dc9917d466efa02fb934197bc2eba35d5680971"
