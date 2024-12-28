@@ -1,8 +1,8 @@
 # Fyne Cross Images
 
 fyne-cross is a simple tool to cross compile and create distribution packages
-for [Fyne](https://fyne.io) applications using docker images that include Linux,
-the MinGW compiler for Windows, FreeBSD, and a macOS SDK, along with the Fyne
+for [Fyne](https://fyne.io) applications using docker images that include Linux, 
+Windows, FreeBSD, and a macOS SDK, along with the Fyne
 requirements.
 
 This project provides the docker images required by fyne-cross to cross compile.
@@ -35,7 +35,7 @@ The supported architectures for the host are `amd64`and `arm64`.
 | web            | :white_check_mark: | :white_check_mark: |
 
 > Note: 
-> - darwin images works against MacOSX SDKs 11.3. Other SDKs are not supported.
+> - darwin images work against macOS SDK 11.3. Other SDKs are not supported.
 > Other SDK versions could require a different min SDK version that can specified using the `--macosx-version-min` flag
 > - android NDK is not available for linux/arm64, cross-compilation from arm64 hosts won't be supported in this initial release
 
