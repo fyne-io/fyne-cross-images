@@ -1,11 +1,11 @@
 const std = @import("std");
 
-pub fn build(b: *std.build.Builder) void {
+pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
+
     const xar = b.addStaticLibrary(.{
         .name = "xar",
-        .root_source_file = null,
         .target = target,
         .optimize = optimize,
     });
@@ -33,13 +33,13 @@ pub fn build(b: *std.build.Builder) void {
         "xar/xar/lib/util.c",
         "xar/xar/lib/zxar.c",
     }, &[_][]const u8{});
-    xar.addIncludePath("xar/xar/include");
-    xar.addIncludePath("/usr/include");
-    xar.addIncludePath("/usr/include/libxml2");
-    xar.addIncludePath("/usr/include/x86_64-linux-gnu");
+    xar.addIncludePath(.{ .path = "xar/xar/include" });
+    xar.addIncludePath(.{ .path = "/usr/include" });
+    xar.addIncludePath(.{ .path = "/usr/include/libxml2" });
+    xar.addIncludePath(.{ .path = "/usr/include/x86_64-linux-gnu" });
     xar.defineCMacro("_GNU_SOURCE", "1");
 
-    xar.addLibraryPath("/usr/lib/x86_64-linux-gnu");
+    xar.addLibraryPath(.{ .path = "/usr/lib/x86_64-linux-gnu" });
     xar.linkSystemLibrary("lzma");
     xar.linkSystemLibrary("bz2");
     xar.linkSystemLibrary("z");
@@ -49,26 +49,28 @@ pub fn build(b: *std.build.Builder) void {
     b.installArtifact(xar);
 
     b.installDirectory(std.build.InstallDirectoryOptions{
-        .source_dir = "xar/xar/include",
+        .source_dir = .{ .path = "xar/xar/include" },
         .install_dir = .header,
         .install_subdir = "xar",
     });
 
     const xarexe = b.addExecutable(.{
         .name = "xar",
-        .root_source_file = null,
         .target = target,
         .optimize = optimize,
     });
-    xarexe.addCSourceFile("xar/xar/src/xar.c", &[_][]const u8{});
-    xarexe.addIncludePath("xar/xar/include");
-    xarexe.addIncludePath("/usr/include");
-    xarexe.addIncludePath("/usr/include/libxml2");
-    xarexe.addIncludePath("/usr/include/x86_64-linux-gnu");
+    xarexe.addCSourceFile(.{
+        .file = .{ .path = "xar/xar/src/xar.c" },
+        .flags = &[_][]const u8{},
+    });
+    xarexe.addIncludePath(.{ .path = "xar/xar/include" });
+    xarexe.addIncludePath(.{ .path = "/usr/include" });
+    xarexe.addIncludePath(.{ .path = "/usr/include/libxml2" });
+    xarexe.addIncludePath(.{ .path = "/usr/include/x86_64-linux-gnu" });
     xarexe.defineCMacro("_GNU_SOURCE", "1");
 
-    xarexe.addLibraryPath("zig-out/lib");
-    xarexe.addLibraryPath("/usr/lib/x86_64-linux-gnu");
+    xarexe.linkLibrary(xar);
+    xarexe.addLibraryPath(.{ .path = "/usr/lib/x86_64-linux-gnu" });
     xarexe.linkSystemLibrary("xml2");
     xarexe.linkSystemLibrary("z");
     xarexe.linkSystemLibrary("crypto");
@@ -81,17 +83,19 @@ pub fn build(b: *std.build.Builder) void {
 
     const exe = b.addExecutable(.{
         .name = "pbxz",
-        .root_source_file = null,
         .target = target,
         .optimize = optimize,
     });
-    exe.addCSourceFile("pbzx/pbzx.c", &[_][]const u8{});
-    exe.addIncludePath("zig-out/include");
-    exe.addIncludePath("/usr/include");
-    exe.addIncludePath("/usr/include/x86_64-linux-gnu");
+    exe.addCSourceFile(.{
+        .file = .{ .path = "pbzx/pbzx.c" },
+        .flags = &[_][]const u8{},
+    });
+    exe.addIncludePath(.{ .path = "zig-out/include" });
+    exe.addIncludePath(.{ .path = "/usr/include" });
+    exe.addIncludePath(.{ .path = "/usr/include/x86_64-linux-gnu" });
 
-    exe.addLibraryPath("/usr/lib/x86_64-linux-gnu");
-    exe.addLibraryPath("zig-out/lib");
+    exe.linkLibrary(xar);
+    exe.addLibraryPath(.{ .path = "/usr/lib/x86_64-linux-gnu" });
     exe.linkSystemLibrary("xml2");
     exe.linkSystemLibrary("z");
     exe.linkSystemLibrary("crypto");
