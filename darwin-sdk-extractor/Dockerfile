@@ -2,7 +2,7 @@ ARG FYNE_CROSS_IMAGES_VERSION
 ARG FYNE_CROSS_REPOSITORY
 
 # fyne-cross image for linux
-FROM ${FYNE_CROSS_REPOSITORY}:${FYNE_CROSS_IMAGES_VERSION}-base as build
+FROM ${FYNE_CROSS_REPOSITORY}:${FYNE_CROSS_IMAGES_VERSION}-base AS build
 
 RUN set -eux; \
     apt-get update; \
@@ -10,8 +10,6 @@ RUN set -eux; \
         # required to complile xar and pbzx
         libxml2-dev  libssl-dev zlib1g-dev liblzma-dev libbz2-dev \
     ; \
-    # remove static libs to force zig to use dynamic lib
-    rm /usr/lib/*-linux-gnu/lib*.a; \
     apt-get -qy autoremove; \
     apt-get clean; \
     rm -r /var/lib/apt/lists/*;
@@ -26,7 +24,7 @@ RUN set -eux; \
     cd xar/xar; CC="zig cc" ./configure; \
     cd /build; \
     mv /tmp/build.zig . ; \
-    zig build 
+    zig build -Doptimize=ReleaseSmall
 
 
 # fyne-cross image for linux
