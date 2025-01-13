@@ -19,6 +19,7 @@ jobs:
           - os: freebsd
             arch: -amd64
           - os: freebsd
+            args: -arch arm64
             arch: -arm64
 
     steps:
