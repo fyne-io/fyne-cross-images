@@ -19,7 +19,7 @@ RUN mkdir /freebsd \
 ENV PKG_CONFIG_SYSROOT_DIR=/freebsd
 ENV PKG_CONFIG_LIBDIR=/freebsd/usr/libdata/pkgconfig:/freebsd/usr/local/libdata/pkgconfig
 
-RUN pkg fetch -o /tmp/download --yes -d xorg glfw; \
+RUN pkg fetch -o /tmp/download --yes -d xorg-minimal glfw; \
     rm -rf /tmp/download/All/*llvm*; \
     rm -rf /tmp/download/All/*perl*; \
     rm -rf /tmp/download/All/*python*; \
