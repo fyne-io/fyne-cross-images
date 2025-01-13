@@ -18,9 +18,8 @@ jobs:
           - os: web
           - os: freebsd
             arch: -amd64
-# Calculator build is failing on CI
-#          - os: freebsd
-#            arch: -arm64
+          - os: freebsd
+            arch: -arm64
 
     steps:
       - name: Setup Go environment
