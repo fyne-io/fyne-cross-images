@@ -7,7 +7,7 @@ RUNNER := $(shell 2>/dev/null 1>&2 docker version && echo "docker" || echo "podm
 
 docker-base: .docker-base
 .docker-base: base/Dockerfile
-	@docker buildx build --platform linux/amd64,linux/arm64 -f ${CURDIR}/base/Dockerfile -t ${REPOSITORY}:${VERSION}-base -t ${REPOSITORY}:${VERSION}-windows -t ${REPOSITORY}:windows --push .
+	@docker buildx build --platform linux/amd64,linux/arm64 -f ${CURDIR}/base/Dockerfile -t ${REPOSITORY}:${VERSION}-base -t ${REPOSITORY}:${VERSION}-windows -t ${REPOSITORY}:windows -t ${REPOSITORY}:${VERSION}-web -t ${REPOSITORY}:web --push .
 	@touch .docker-base
 
 docker-darwin: .docker-darwin
@@ -42,20 +42,16 @@ docker-linux: .docker-linux
 	@docker buildx build --platform linux/amd64,linux/arm64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/linux/Dockerfile -t ${REPOSITORY}:${VERSION}-linux -t ${REPOSITORY}:linux --push .
 	@touch .docker-linux
 
-docker-web: .docker-web
-.docker-web: docker-base web/Dockerfile
-	@docker buildx build --platform linux/amd64,linux/arm64 --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/web/Dockerfile -t ${REPOSITORY}:${VERSION}-web -t ${REPOSITORY}:web --push .
-	@touch .docker-web
-
-docker-all: docker-base docker-darwin docker-darwin-sdk-extractor docker-freebsd docker-linux docker-web
+docker-all: docker-base docker-darwin docker-darwin-sdk-extractor docker-freebsd docker-linux
 
 podman-base: .podman-base
 .podman-base: base/Dockerfile
 	@buildah manifest create ${VERSION}-base
-	@buildah bud --tag ${REPOSITORY}:${VERSION}-base --tag ${REPOSITORY}:${VERSION}-windows --manifest ${VERSION}-base --arch amd64 base
-	@buildah bud --tag ${REPOSITORY}:${VERSION}-base --tag ${REPOSITORY}:${VERSION}-windows --manifest ${VERSION}-base --arch arm64 base
+	@buildah bud --tag ${REPOSITORY}:${VERSION}-base --tag ${REPOSITORY}:${VERSION}-windows --tag ${REPOSITORY}:${VERSION}-web --manifest ${VERSION}-base --arch amd64 base
+	@buildah bud --tag ${REPOSITORY}:${VERSION}-base --tag ${REPOSITORY}:${VERSION}-windows --tag ${REPOSITORY}:${VERSION}-web --manifest ${VERSION}-base --arch arm64 base
 	@buildah manifest push --all ${VERSION}-base docker://${REPOSITORY}:${VERSION}-base
 	@buildah manifest push --all ${VERSION}-base docker://${REPOSITORY}:${VERSION}-windows
+	@buildah manifest push --all ${VERSION}-base docker://${REPOSITORY}:${VERSION}-web
 	@touch .podman-base
 
 podman-linux: .podman-linux
@@ -116,14 +112,6 @@ podman-freebsd-arm64: .podman-freebsd-arm64
 
 podman-freebsd: podman-freebsd-arm64 podman-freebsd-amd64
 
-podman-web: .podman-web
-.podman-web: .podman-base web/Dockerfile
-	@buildah manifest create ${VERSION}-web
-	@buildah bud --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} --tag ${REPOSITORY}:${VERSION}-web --manifest ${VERSION}-web --arch amd64 web
-	@buildah bud --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} --tag ${REPOSITORY}:${VERSION}-web --manifest ${VERSION}-web --arch arm64 web
-	@buildah manifest push --all ${VERSION}-web docker://${REPOSITORY}:${VERSION}-web
-	@touch .podman-web
-
-podman-all: podman-darwin podman-darwin-sdk-extractor podman-freebsd podman-linux podman-web
+podman-all: podman-darwin podman-darwin-sdk-extractor podman-freebsd podman-linux
 
 all: $(RUNNER)-all
