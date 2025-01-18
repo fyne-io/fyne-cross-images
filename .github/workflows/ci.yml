@@ -25,6 +25,9 @@ jobs:
 # See https://github.com/actions/runner/issues/1512 for this weird syntax
           - {runner: ubuntu-24.04-arm,
              target: {os: android, args: -app-id calc.sha}}
+# Freebsd build on arm runner do not work at this time
+          - {runner: ubuntu-24.04-arm,
+             target: {os: freebsd, arch: -amd64}}
 
     runs-on: ${{ matrix.runner }}
 
