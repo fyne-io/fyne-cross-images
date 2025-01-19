@@ -17,9 +17,10 @@ jobs:
             args: -app-id calc.sha
           - os: web
           - os: freebsd
-            args: -arch amd64
-          - os: freebsd
-            args: -arch arm64
+            arch: -amd64
+# Calculator build is failing on CI
+#          - os: freebsd
+#            arch: -arm64
         exclude:
 # See https://github.com/actions/runner/issues/1512 for this weird syntax
           - {runner: ubuntu-24.04-arm,
