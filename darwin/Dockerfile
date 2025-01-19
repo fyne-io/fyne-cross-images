@@ -16,18 +16,20 @@ RUN set -eux; \
     public_key=${ZIG_MINISIGN_KEY}; \
     case "$arch" in \
         'amd64') \
-            url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-x86_64-${ZIG_VERSION}.tar.xz";\
+            arch="x86_64";\
+            url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-${arch}-${ZIG_VERSION}.tar.xz";\
             ;; \
         'arm64') \
-            url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-aarch64-${ZIG_VERSION}.tar.xz";\
+            arch="aarch64";\
+            url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-${arch}-${ZIG_VERSION}.tar.xz";\
             ;; \
         *) echo >&2 "error: unsupported architecture '$arch'"; exit 1 ;; \
     esac; \
     curl -sSL ${url} -o zig.tar.xz; \
     curl -sSL ${url}.minisig -o zig.tar.xz.minisig; \
-    minisign -Vm zig.tar.xz -P ${public_key}; \
+    /usr/local/minisign/${arch}/minisign -Vm zig.tar.xz -P ${public_key}; \
     tar -C /usr/local -Jxvf zig.tar.xz; \
     mv /usr/local/zig-* /usr/local/zig; \
-    rm zig.tar.xz; \
+    rm zig.tar*; \
     zig version;
 

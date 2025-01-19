@@ -1,6 +1,3 @@
-# minisign is needed to verify the zig download
-FROM jedisct1/minisign AS minisign
-
 FROM debian:bookworm-slim AS base
 
 ENV GO_VERSION=1.23.5
@@ -10,6 +7,7 @@ ENV ZIG_VERSION=0.13.0
 ENV ZIG_MINISIGN_KEY="RWSGOq2NVecA2UPNdBUZykf1CCb147pkmdtYxgb3Ti+JO/wCYvhbAb/U"
 ENV FYNE_VERSION=v2.5.3
 ENV FIXUID_VERSION=0.5.1
+ENV MINISIGN_VERSION=0.12
 
 # Install common dependencies
 
@@ -62,36 +60,41 @@ WORKDIR $GOPATH
 # https://github.com/docker-library/golang/issues/472
 ENV GOTOOLCHAIN=local
 
+# Install minisign
+RUN set -eux; \
+    curl -sSL https://github.com/jedisct1/minisign/releases/download/${MINISIGN_VERSION}/minisign-${MINISIGN_VERSION}-linux.tar.gz -o minisign.tgz; \
+    mkdir -p /usr/local/minisign; ls -l;\
+    tar -C /usr/local/minisign --strip-components=1 -zxvf minisign.tgz; \
+    rm minisign.tgz
+
 # Install Zig
-
-# copy minisign
-COPY --from=minisign /usr/local/bin/minisign /usr/local/bin/minisign
-
 RUN set -eux; \
     arch="$(dpkg --print-architecture)"; \
     url=; \
     public_key=${ZIG_MINISIGN_KEY}; \
     case "$arch" in \
         'amd64') \
+            arch="x86_64";\
             # dev release
-            # url="https://ziglang.org/builds/zig-linux-x86_64-${ZIG_VERSION}.tar.xz";\
+            # url="https://ziglang.org/builds/zig-linux-${arch}-${ZIG_VERSION}.tar.xz";\
             # stable release
-            url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-x86_64-${ZIG_VERSION}.tar.xz";\
+            url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-${arch}-${ZIG_VERSION}.tar.xz";\
             ;; \
         'arm64') \
+            arch="aarch64";\
             # dev release
-            #url="https://ziglang.org/builds/zig-linux-aarch64-${ZIG_VERSION}.tar.xz";\
+            #url="https://ziglang.org/builds/zig-linux-${arch}-${ZIG_VERSION}.tar.xz";\
             # stable release
-            url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-aarch64-${ZIG_VERSION}.tar.xz";\
+            url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-${arch}-${ZIG_VERSION}.tar.xz";\
             ;; \
         *) echo >&2 "error: unsupported architecture '$arch'"; exit 1 ;; \
     esac; \
     curl -sSL ${url} -o zig.tar.xz; \
     curl -sSL ${url}.minisig -o zig.tar.xz.minisig; \
-    minisign -Vm zig.tar.xz -P ${public_key}; \
+    /usr/local/minisign/${arch}/minisign -Vm zig.tar.xz -P ${public_key}; \
     tar -C /usr/local -Jxvf zig.tar.xz; \
     mv /usr/local/zig-* /usr/local/zig; \
-    rm zig.tar.xz; \
+    rm zig.tar*; \
     zig version;
 
 ##################################################################
