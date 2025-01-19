@@ -4,23 +4,32 @@ on: [push,pull_request]
 jobs:
   test:
     name: "Test images"
-    runs-on: "ubuntu-latest"
     strategy:
       fail-fast: false
       matrix:
-        go-version: ["1.19.x"]
+        runner: [ubuntu-latest, ubuntu-24.04-arm]
+        go-version: ["1.19.x", "1.23.x"]
         target:
           - os: linux
           - os: windows
             ext: .exe
           - os: android
-            args: -app-id calc.sha${{ github.sha }}
+            args: -app-id calc.sha
           - os: web
           - os: freebsd
             arch: -amd64
 # Calculator build is failing on CI
 #          - os: freebsd
 #            arch: -arm64
+        exclude:
+# See https://github.com/actions/runner/issues/1512 for this weird syntax
+          - {runner: ubuntu-24.04-arm,
+             target: {os: android, args: -app-id calc.sha}}
+# Freebsd build on arm runner do not work at this time
+          - {runner: ubuntu-24.04-arm,
+             target: {os: freebsd, arch: -amd64}}
+
+    runs-on: ${{ matrix.runner }}
 
     steps:
       - name: Setup Go environment
