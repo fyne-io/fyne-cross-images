@@ -47,6 +47,7 @@ jobs:
         with:
           repository: fyne-io/fyne-cross
           path: fyne-cross
+          ref: develop
 
       - name: Checkout calcultator repository
         uses: actions/checkout@v3

@@ -7,7 +7,7 @@ FROM ${FYNE_CROSS_REPOSITORY}:${FYNE_CROSS_IMAGES_VERSION}-base
 # Install Java
 RUN apt-get update && \
     apt-get upgrade -qy && \
-    apt-get install -qy openjdk-11-jdk p7zip-full && \
+    apt-get install -qy openjdk-17-jdk p7zip-full && \
     apt-get -qy autoremove && \
     apt-get clean && \
     rm -r /var/lib/apt/lists/*;

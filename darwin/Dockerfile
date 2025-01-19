@@ -5,7 +5,7 @@ ARG FYNE_CROSS_REPOSITORY
 FROM ${FYNE_CROSS_REPOSITORY}:${FYNE_CROSS_IMAGES_VERSION}-base
 
 # 0.9.1 version of Zig to support darwin targets
-# see: ...
+# see: https://github.com/ziglang/zig/issues/20689
 ENV ZIG_VERSION=0.9.1
 
 # Install Zig
@@ -13,23 +13,23 @@ RUN set -eux; \
     rm -rf /usr/local/zig; \
     arch="$(dpkg --print-architecture)"; \
     url=; \
-    sha256=; \
+    public_key=${ZIG_MINISIGN_KEY}; \
     case "$arch" in \
         'amd64') \
-            # stable release
-            url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-x86_64-${ZIG_VERSION}.tar.xz";\
-            sha256='be8da632c1d3273f766b69244d80669fe4f5e27798654681d77c992f17c237d7'; \
+            arch="x86_64";\
+            url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-${arch}-${ZIG_VERSION}.tar.xz";\
             ;; \
         'arm64') \
-            # stable release
-            url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-aarch64-${ZIG_VERSION}.tar.xz";\
-            sha256='5d99a39cded1870a3fa95d4de4ce68ac2610cca440336cfd252ffdddc2b90e66'; \
+            arch="aarch64";\
+            url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-${arch}-${ZIG_VERSION}.tar.xz";\
             ;; \
         *) echo >&2 "error: unsupported architecture '$arch'"; exit 1 ;; \
     esac; \
     curl -sSL ${url} -o zig.tar.xz; \
-    echo ${sha256} zig.tar.xz | sha256sum -c -; \
+    curl -sSL ${url}.minisig -o zig.tar.xz.minisig; \
+    /usr/local/minisign/${arch}/minisign -Vm zig.tar.xz -P ${public_key}; \
     tar -C /usr/local -Jxvf zig.tar.xz; \
     mv /usr/local/zig-* /usr/local/zig; \
-    rm zig.tar.xz; \
+    rm zig.tar*; \
     zig version;
+

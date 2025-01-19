@@ -2,7 +2,7 @@ ARG FYNE_CROSS_IMAGES_VERSION
 ARG FYNE_CROSS_REPOSITORY
 
 # fyne-cross image for linux
-FROM ${FYNE_CROSS_REPOSITORY}:${FYNE_CROSS_IMAGES_VERSION}-base as pkg
+FROM ${FYNE_CROSS_REPOSITORY}:${FYNE_CROSS_IMAGES_VERSION}-base AS pkg
 
 RUN set -eux; \
     apt-get update; \
@@ -49,12 +49,12 @@ FROM pkg
 COPY --from=pkg /pkg /pkg
 
 ENV PATH=/pkg/sbin:${PATH}
-ENV LLVM_VERSION=12
+ENV LLVM_VERSION=17
  
 RUN apt-get update -qq \
     && apt install -y -q --no-install-recommends gnupg \
     && curl -L https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - \
-    && echo "deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-${LLVM_VERSION} main" | tee /etc/apt/sources.list.d/llvm.list > /dev/null \
+    && echo "deb http://apt.llvm.org/bookworm/ llvm-toolchain-bookworm-${LLVM_VERSION} main" | tee /etc/apt/sources.list.d/llvm.list > /dev/null \
     && apt-get update -qq \
     && apt-get install -y -q --no-install-recommends \
         clang-${LLVM_VERSION} \

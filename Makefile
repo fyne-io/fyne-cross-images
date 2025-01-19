@@ -55,14 +55,13 @@ linux: .linux
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-linux ${REPOSITORY}:linux
 	@touch .linux
 
-web: .web
-.web: .base web/Dockerfile
-	@$(RUNNER) build --build-arg FYNE_CROSS_IMAGES_VERSION=${VERSION} --build-arg FYNE_CROSS_REPOSITORY=${REPOSITORY} -f ${CURDIR}/web/Dockerfile -t ${REPOSITORY}:${VERSION}-web .
+web: base
+  # web image is a tag to the base image
+	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-base ${REPOSITORY}:${VERSION}-web
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-web ${REPOSITORY}:web
-	@touch .web
 
 windows: base
-    # windows image is a tag to the base image
+  # windows image is a tag to the base image
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-base ${REPOSITORY}:${VERSION}-windows
 	@$(RUNNER) tag ${REPOSITORY}:${VERSION}-windows ${REPOSITORY}:windows
 
