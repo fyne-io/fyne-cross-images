@@ -5,7 +5,7 @@ ENV GO_AMD64_CHECKSUM="77e5da33bb72aeaef1ba4418b6fe511bc4d041873cbf82e5aa6318740
 ENV GO_ARM64_CHECKSUM="d5501ee5aca0f258d5fe9bfaed401958445014495dc115f202d43d5210b45241"
 ENV ZIG_VERSION=0.14.1
 ENV ZIG_MINISIGN_KEY="RWSGOq2NVecA2UPNdBUZykf1CCb147pkmdtYxgb3Ti+JO/wCYvhbAb/U"
-ENV FYNE_CLI_VERSION=v1.6.1
+ENV FYNE_VERSION=v2.6.1
 ENV FIXUID_VERSION=0.5.1
 ENV MINISIGN_VERSION=0.12
 
@@ -109,8 +109,9 @@ RUN set -eux; \
 
 # Install the fyne CLI tool
 RUN set -eux; \ 
-    go install -ldflags="-w -s" -v "fyne.io/tools/cmd/fyne@${FYNE_CLI_VERSION}"; \
+    go install -ldflags="-w -s" -v "fyne.io/fyne/v2/cmd/fyne@${FYNE_VERSION}"; \
     mv /go/bin/fyne /usr/local/bin/fyne; \
+    fyne version; \
     go clean -cache -modcache; \
     mkdir -p "$GOPATH/pkg/mod" && chmod -R 777 "$GOPATH"
 
