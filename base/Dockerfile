@@ -1,11 +1,11 @@
 FROM debian:bookworm-slim AS base
 
-ENV GO_VERSION=1.23.5
-ENV GO_AMD64_CHECKSUM="cbcad4a6482107c7c7926df1608106c189417163428200ce357695cc7e01d091"
-ENV GO_ARM64_CHECKSUM="47c84d332123883653b70da2db7dd57d2a865921ba4724efcdf56b5da7021db0"
-ENV ZIG_VERSION=0.13.0
+ENV GO_VERSION=1.24.4
+ENV GO_AMD64_CHECKSUM="77e5da33bb72aeaef1ba4418b6fe511bc4d041873cbf82e5aa6318740df98717"
+ENV GO_ARM64_CHECKSUM="d5501ee5aca0f258d5fe9bfaed401958445014495dc115f202d43d5210b45241"
+ENV ZIG_VERSION=0.14.1
 ENV ZIG_MINISIGN_KEY="RWSGOq2NVecA2UPNdBUZykf1CCb147pkmdtYxgb3Ti+JO/wCYvhbAb/U"
-ENV FYNE_VERSION=v2.5.3
+ENV FYNE_VERSION=v2.5.5
 ENV FIXUID_VERSION=0.5.1
 ENV MINISIGN_VERSION=0.12
 
@@ -76,16 +76,16 @@ RUN set -eux; \
         'amd64') \
             arch="x86_64";\
             # dev release
-            # url="https://ziglang.org/builds/zig-linux-${arch}-${ZIG_VERSION}.tar.xz";\
+            # url="https://ziglang.org/builds/zig-${arch}-linux-${ZIG_VERSION}.tar.xz";\
             # stable release
-            url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-${arch}-${ZIG_VERSION}.tar.xz";\
+            url="https://ziglang.org/download/${ZIG_VERSION}/zig-${arch}-linux-${ZIG_VERSION}.tar.xz";\
             ;; \
         'arm64') \
             arch="aarch64";\
             # dev release
-            #url="https://ziglang.org/builds/zig-linux-${arch}-${ZIG_VERSION}.tar.xz";\
+            #url="https://ziglang.org/builds/zig-${arch}-linux-${ZIG_VERSION}.tar.xz";\
             # stable release
-            url="https://ziglang.org/download/${ZIG_VERSION}/zig-linux-${arch}-${ZIG_VERSION}.tar.xz";\
+            url="https://ziglang.org/download/${ZIG_VERSION}/zig-${arch}-linux-${ZIG_VERSION}.tar.xz";\
             ;; \
         *) echo >&2 "error: unsupported architecture '$arch'"; exit 1 ;; \
     esac; \
