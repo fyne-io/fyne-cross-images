@@ -5,7 +5,7 @@ ENV GO_AMD64_CHECKSUM="0335f314b6e7bfe08c3d0cfaa7c19db961b7b99fb20be62b0a826c992
 ENV GO_ARM64_CHECKSUM="1d42ebc84999b5e2069f5e31b67d6fc5d67308adad3e178d5a2ee2c9ff2001f5"
 ENV ZIG_VERSION=0.15.2
 ENV ZIG_MINISIGN_KEY="RWSGOq2NVecA2UPNdBUZykf1CCb147pkmdtYxgb3Ti+JO/wCYvhbAb/U"
-ENV FYNE_VERSION=v2.5.5
+ENV FYNE_TOOL_VERSION=v1.7.0
 ENV FIXUID_VERSION=0.6.0
 ENV MINISIGN_VERSION=0.12
 
@@ -109,7 +109,7 @@ RUN set -eux; \
 
 # Install the fyne CLI tool
 RUN set -eux; \ 
-    go install -ldflags="-w -s" -v "fyne.io/fyne/v2/cmd/fyne@${FYNE_VERSION}"; \
+    go install -ldflags="-w -s" -v "fyne.io/tools/cmd/fyne@${FYNE_TOOL_VERSION}"; \
     mv /go/bin/fyne /usr/local/bin/fyne; \
     fyne version; \
     go clean -cache -modcache; \
