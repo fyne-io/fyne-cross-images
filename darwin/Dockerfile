@@ -1,8 +1,7 @@
-ARG FYNE_CROSS_IMAGES_VERSION
-ARG FYNE_CROSS_REPOSITORY
+ARG FYNE_CROSS_IMAGE_TAG
 
 # fyne-cross image for linux
-FROM ${FYNE_CROSS_REPOSITORY}:${FYNE_CROSS_IMAGES_VERSION}-base
+FROM ${FYNE_CROSS_IMAGE_TAG}
 
 # 0.9.1 version of Zig to support darwin targets
 # see: https://github.com/ziglang/zig/issues/20689

@@ -1,8 +1,7 @@
-ARG FYNE_CROSS_IMAGES_VERSION
-ARG FYNE_CROSS_REPOSITORY
+ARG FYNE_CROSS_IMAGE_TAG
 
 # fyne-cross image for linux
-FROM ${FYNE_CROSS_REPOSITORY}:${FYNE_CROSS_IMAGES_VERSION}-base AS build
+FROM ${FYNE_CROSS_IMAGE_TAG} AS build
 
 RUN set -eux; \
     apt-get update; \
@@ -28,7 +27,7 @@ RUN set -eux; \
 
 
 # fyne-cross image for linux
-FROM fyneio/fyne-cross-images:${FYNE_CROSS_IMAGES_VERSION}-base
+FROM ${FYNE_CROSS_IMAGE_TAG}
 
 COPY --from=build /build/zig-out/bin /usr/local/bin
 
