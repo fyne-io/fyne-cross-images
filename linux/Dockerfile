@@ -18,6 +18,7 @@ RUN set -eux; \
         libxi-dev:amd64 \
         libxcursor-dev:amd64 \
         libxinerama-dev:amd64 \
+        libxtst-dev:amd64 \
          # deps to support wayland
         libgles2-mesa-dev:amd64 \
         libwayland-dev:amd64 \
@@ -32,6 +33,7 @@ RUN set -eux; \
         libxi-dev:arm64 \
         libxcursor-dev:arm64 \
         libxinerama-dev:arm64 \
+        libxtst-dev:arm64 \
          # deps to support wayland
         libgles2-mesa-dev:arm64 \
         libwayland-dev:arm64 \
@@ -46,6 +48,7 @@ RUN set -eux; \
         libxi-dev:armhf \
         libxcursor-dev:armhf \
         libxinerama-dev:armhf \
+        libxtst-dev:armhf \
          # deps to support wayland
         libgles2-mesa-dev:armhf \
         libwayland-dev:armhf \
@@ -60,6 +63,7 @@ RUN set -eux; \
         libxi-dev:i386 \
         libxcursor-dev:i386 \
         libxinerama-dev:i386 \
+        libxtst-dev:i386 \
          # deps to support wayland
         libgles2-mesa-dev:i386 \
         libwayland-dev:i386 \
